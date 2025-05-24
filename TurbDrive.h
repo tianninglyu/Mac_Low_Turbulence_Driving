@@ -8,4 +8,4 @@ std::vector<double> GRF(int n, int k, unsigned int seed); // Create a Gaussian R
 
 void scale_velocity_to_unity(std::vector<double>& pertx, std::vector<double>& perty, std::vector<double>& pertz); // Scale the velocity to unity
 
-void save_to_hdf5(std::vector<double>& pertx, std::vector<double>& perty, std::vector<double>& pertz, int n, int k, unsigned int seed[3]); // Save the perturbtation field to the HDF5 file
+void save_to_hdf5(std::vector<double>& pertx, std::vector<double>& perty, std::vector<double>& pertz, int n, int k, unsigned int seed); // Save the perturbtation field to the HDF5 file
