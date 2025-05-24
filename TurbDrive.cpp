@@ -102,12 +102,9 @@ void save_to_hdf5(std::vector<double>& pertx, std::vector<double>& perty, std::v
     // Create or overwrite 'zdrv.hdf5'
     H5::H5File file(filename.str(), H5F_ACC_TRUNC);
     
-    // Define the size of the datasets
-    hsize_t pert_dims[1] = {static_cast<hsize_t>(n * n * n)};
-    H5::DataSpace pert_dataspace(1, pert_dims); // Dataspace for 1D perturbtation array
-    
-    hsize_t seed_dims[1] = {3};
-    H5::DataSpace seed_dataspace(1, seed_dims); // Dataspace for seed array
+    // Define the size of the datasets to (n, n, n)
+    hsize_t pert_dims[3] = {static_cast<hsize_t>(n), static_cast<hsize_t>(n), static_cast<hsize_t>(n)};
+    H5::DataSpace pert_dataspace(3, pert_dims); // Dataspace for 3D perturbtation array
     
     // Create datasets for pertx, perty, pertz
     H5::DataSet dataset_pertx = file.createDataSet("pertx", H5::PredType::NATIVE_DOUBLE, pert_dataspace);
@@ -122,6 +119,6 @@ void save_to_hdf5(std::vector<double>& pertx, std::vector<double>& perty, std::v
     // Set attributes
     file.createAttribute("n", H5::PredType::NATIVE_INT, H5::DataSpace(H5S_SCALAR)).write(H5::PredType::NATIVE_INT, &n);
     file.createAttribute("k", H5::PredType::NATIVE_INT, H5::DataSpace(H5S_SCALAR)).write(H5::PredType::NATIVE_INT, &k);
-    file.createAttribute("seed", H5::PredType::NATIVE_UINT, seed_dataspace).write(H5::PredType::NATIVE_UINT, seed);
+    file.createAttribute("seed", H5::PredType::NATIVE_UINT, H5::DataSpace(H5S_SCALAR)).write(H5::PredType::NATIVE_UINT, seed);
     
 }
