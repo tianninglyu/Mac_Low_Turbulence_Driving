@@ -11,7 +11,7 @@
 
 int main(int argc, const char * argv[]) {
     int n, k;
-    unsigned int seed[3];
+    unsigned int seed;
     // double vrms;
     // double Ein;
     
@@ -36,9 +36,9 @@ int main(int argc, const char * argv[]) {
     // std::cin >> Ein;
     
     // Generate all the velocity components
-    std::vector<double> pertx = GRF(n, k, *seed);
-    std::vector<double> perty = GRF(n, k, *(seed + 1));
-    std::vector<double> pertz = GRF(n, k, *(seed + 2));
+    std::vector<double> pertx = GRF(n, k, seed);
+    std::vector<double> perty = GRF(n, k, seed + 1);
+    std::vector<double> pertz = GRF(n, k, seed + 2);
     
     // Scale the velocity to unity
     scale_velocity_to_unity(pertx, perty, pertz);
