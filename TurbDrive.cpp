@@ -119,6 +119,6 @@ void save_to_hdf5(std::vector<double>& pertx, std::vector<double>& perty, std::v
     // Set attributes
     file.createAttribute("n", H5::PredType::NATIVE_INT, H5::DataSpace(H5S_SCALAR)).write(H5::PredType::NATIVE_INT, &n);
     file.createAttribute("k", H5::PredType::NATIVE_INT, H5::DataSpace(H5S_SCALAR)).write(H5::PredType::NATIVE_INT, &k);
-    file.createAttribute("seed", H5::PredType::NATIVE_UINT, H5::DataSpace(H5S_SCALAR)).write(H5::PredType::NATIVE_UINT, seed);
+    file.createAttribute("seed", H5::PredType::NATIVE_UINT, H5::DataSpace(H5S_SCALAR)).write(H5::PredType::NATIVE_UINT, &seed);
     
 }
