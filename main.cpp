@@ -24,7 +24,7 @@ int main(int argc, const char * argv[]) {
     std::cin >> k;
     
     // Set random seeds
-    std::cout << "Please set random seeds for generating pertx, perty and pertz (separated by space):";
+    std::cout << "Please set random seeds for generating pertx, perty and pertz:";
     std::cin >> seed;
     
     // Set initial rms velocity vrms
