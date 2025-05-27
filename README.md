@@ -21,4 +21,5 @@ Now you can see a executable file called 'TurbDrive' in the working directory.
 **Step 3**: Run the code.
 
 After running the program, just follow the program's prompts to set the number of grids, wavenumber, and random seeds. Please note that the wavenumber you set should be the maximum wavenumber. For example, if you expect the power spectrum to be a top-hat function of \[1,2\], you should set the wave number to 2.
-# Warning: Still testing! Don't use it in your scientific work!
+
+# Warning: Still testing! Please use with caution and verify results.
