@@ -97,7 +97,7 @@ void scale_velocity_to_unity(std::vector<double>& pertx, std::vector<double>& pe
 void save_to_hdf5(std::vector<double>& pertx, std::vector<double>& perty, std::vector<double>& pertz, int n, int k, unsigned int seed)
 {
     std::stringstream filename;
-    filename << "/Users/lvtianning/Documents/SHAO/Turb_Box/zdrv_n" << n << "_k" << k << ".hdf5";
+    filename << "zdrv_n" << n << "_k" << k << ".hdf5";
     
     // Create or overwrite 'zdrv.hdf5'
     H5::H5File file(filename.str(), H5F_ACC_TRUNC);
