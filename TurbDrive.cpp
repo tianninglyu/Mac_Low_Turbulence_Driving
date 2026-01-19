@@ -2,7 +2,7 @@
 #include <cmath>
 #include <fftw3.h>
 #include <random>
-#include <H5Cpp.h>
+#include "hdf5.h"
 #include "TurbDrive.h"
 #include <iomanip>
 #include <sstream>
@@ -42,8 +42,8 @@ void GRF(int n, int k, unsigned int seed, double f_sol,
         fieldz[idx][0] = fieldz[idx][1] = 0.0;
     }
 
-    // Random generators
-    std::default_random_engine generator(seed);
+    // Random generators (mt19937 is deterministic across platforms)
+    std::mt19937 generator(seed);
     std::normal_distribution<double> amplitude_distribution(1.0, 1.0); // Amplitude around unity
     std::uniform_real_distribution<double> phase_distribution(0.0, 2 * PI); // Phase uniform in [0, 2pi]
 
@@ -163,29 +163,44 @@ void scale_velocity_to_unity(std::vector<double>& pertx, std::vector<double>& pe
 void save_to_hdf5(std::vector<double>& pertx, std::vector<double>& perty, std::vector<double>& pertz, int n, int k, unsigned int seed, double f_sol)
 {
     std::stringstream filename;
-    filename << "zdrv_n" << n << "_k" << k << ".hdf5";
-    
-    // Create or overwrite 'zdrv.hdf5'
-    H5::H5File file(filename.str(), H5F_ACC_TRUNC);
-    
-    // Define the size of the datasets to (n, n, n)
-    hsize_t pert_dims[3] = {static_cast<hsize_t>(n), static_cast<hsize_t>(n), static_cast<hsize_t>(n)};
-    H5::DataSpace pert_dataspace(3, pert_dims); // Dataspace for 3D perturbtation array
-    
-    // Create datasets for pertx, perty, pertz
-    H5::DataSet dataset_pertx = file.createDataSet("pertx", H5::PredType::NATIVE_DOUBLE, pert_dataspace);
-    H5::DataSet dataset_perty = file.createDataSet("perty", H5::PredType::NATIVE_DOUBLE, pert_dataspace);
-    H5::DataSet dataset_pertz = file.createDataSet("pertz", H5::PredType::NATIVE_DOUBLE, pert_dataspace);
-    
-    // Write the data to the datasets
-    dataset_pertx.write(pertx.data(), H5::PredType::NATIVE_DOUBLE);
-    dataset_perty.write(perty.data(), H5::PredType::NATIVE_DOUBLE);
-    dataset_pertz.write(pertz.data(), H5::PredType::NATIVE_DOUBLE);
-    
-    // Set attributes
-    file.createAttribute("n", H5::PredType::NATIVE_INT, H5::DataSpace(H5S_SCALAR)).write(H5::PredType::NATIVE_INT, &n);
-    file.createAttribute("k", H5::PredType::NATIVE_INT, H5::DataSpace(H5S_SCALAR)).write(H5::PredType::NATIVE_INT, &k);
-    file.createAttribute("seed", H5::PredType::NATIVE_UINT, H5::DataSpace(H5S_SCALAR)).write(H5::PredType::NATIVE_UINT, &seed);
-    file.createAttribute("f_sol", H5::PredType::NATIVE_DOUBLE, H5::DataSpace(H5S_SCALAR)).write(H5::PredType::NATIVE_DOUBLE, &f_sol);
-    
+    filename << "zdrv_n" << n
+             << "_k" << k
+             << "_seed" << seed
+             << "_f" << std::setprecision(6) << f_sol
+             << ".hdf5";
+
+    const hsize_t dims[3] = {static_cast<hsize_t>(n), static_cast<hsize_t>(n), static_cast<hsize_t>(n)};
+
+    hid_t file = H5Fcreate(filename.str().c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+    hid_t space = H5Screate_simple(3, dims, nullptr);
+    hid_t dset_x = H5Dcreate2(file, "pertx", H5T_NATIVE_DOUBLE, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+    hid_t dset_y = H5Dcreate2(file, "perty", H5T_NATIVE_DOUBLE, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+    hid_t dset_z = H5Dcreate2(file, "pertz", H5T_NATIVE_DOUBLE, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+
+    H5Dwrite(dset_x, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, pertx.data());
+    H5Dwrite(dset_y, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, perty.data());
+    H5Dwrite(dset_z, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, pertz.data());
+
+    hid_t scalar_space = H5Screate(H5S_SCALAR);
+    hid_t attr_n = H5Acreate2(file, "n", H5T_NATIVE_INT, scalar_space, H5P_DEFAULT, H5P_DEFAULT);
+    hid_t attr_k = H5Acreate2(file, "k", H5T_NATIVE_INT, scalar_space, H5P_DEFAULT, H5P_DEFAULT);
+    hid_t attr_seed = H5Acreate2(file, "seed", H5T_NATIVE_UINT, scalar_space, H5P_DEFAULT, H5P_DEFAULT);
+    hid_t attr_fsol = H5Acreate2(file, "f_sol", H5T_NATIVE_DOUBLE, scalar_space, H5P_DEFAULT, H5P_DEFAULT);
+
+    H5Awrite(attr_n, H5T_NATIVE_INT, &n);
+    H5Awrite(attr_k, H5T_NATIVE_INT, &k);
+    H5Awrite(attr_seed, H5T_NATIVE_UINT, &seed);
+    H5Awrite(attr_fsol, H5T_NATIVE_DOUBLE, &f_sol);
+
+    H5Aclose(attr_fsol);
+    H5Aclose(attr_seed);
+    H5Aclose(attr_k);
+    H5Aclose(attr_n);
+    H5Sclose(scalar_space);
+
+    H5Dclose(dset_z);
+    H5Dclose(dset_y);
+    H5Dclose(dset_x);
+    H5Sclose(space);
+    H5Fclose(file);
 }

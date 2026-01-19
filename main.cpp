@@ -6,7 +6,7 @@
 #include <random>
 #include <vector>
 #include <complex>
-#include "H5Cpp.h"
+#include "hdf5.h"
 #include "TurbDrive.h"
 
 int main(int argc, const char * argv[]) {
