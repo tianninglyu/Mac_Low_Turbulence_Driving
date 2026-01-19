@@ -12,6 +12,7 @@
 int main(int argc, const char * argv[]) {
     int n, k;
     unsigned int seed;
+    double f_sol;
     // double vrms;
     // double Ein;
     
@@ -26,6 +27,10 @@ int main(int argc, const char * argv[]) {
     // Set random seeds
     std::cout << "Please set random seeds for generating pertx, perty and pertz:";
     std::cin >> seed;
+
+    // Set solenoidal energy fraction
+    std::cout << "Please set solenoidal energy fraction f_sol (0~1, 1=solenoidal, 0=compressive):";
+    std::cin >> f_sol;
     
     // Set initial rms velocity vrms
     // std::cout << "Please initial rms velocity vrms:";
@@ -36,15 +41,16 @@ int main(int argc, const char * argv[]) {
     // std::cin >> Ein;
     
     // Generate all the velocity components
-    std::vector<double> pertx = GRF(n, k, seed);
-    std::vector<double> perty = GRF(n, k, seed + 1);
-    std::vector<double> pertz = GRF(n, k, seed + 2);
+    std::vector<double> pertx;
+    std::vector<double> perty;
+    std::vector<double> pertz;
+    GRF(n, k, seed, f_sol, pertx, perty, pertz);
     
     // Scale the velocity to unity
     scale_velocity_to_unity(pertx, perty, pertz);
     
     // Save to HDF5 file
-    save_to_hdf5(pertx, perty, pertz, n, k, seed);
+    save_to_hdf5(pertx, perty, pertz, n, k, seed, f_sol);
 
     return 0;
 }

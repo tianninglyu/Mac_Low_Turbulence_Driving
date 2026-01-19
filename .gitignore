@@ -1,0 +1,10 @@
+*.png
+*.hdf5
+PS.py
+.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+.vscode/
+env/
+.idea/
+*.log
