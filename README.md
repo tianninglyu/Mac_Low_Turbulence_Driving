@@ -1,5 +1,5 @@
 ## Overview
-Generates cubic turbulent driving fields using the Mac Low (1999) method. Supports solenoidal energy fraction `f_sol` (1=solenoidal, 0=compressive) and outputs ORION2-ready HDF5 files.
+Generates cubic turbulent driving fields using the Mac Low (1999) method. Supports solenoidal fraction `f_sol` (1=solenoidal, 0=compressive) and outputs ORION2-ready HDF5 files.
 
 ## Dependencies
 - FFTW3 (double precision)
