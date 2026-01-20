@@ -34,7 +34,7 @@ Mode (prompted at runtime):
   - Build one Gaussian random field in k-space, Helmholtz decomposition into solenoidal and compressive parts, then mix amplitudes with `v = f_sol * v_sol + (1 - f_sol) * v_comp`.
   - Same underlying field: sol has 2 DoF, comp has 1 DoF. Resulting solenoidal energy fraction tends to $\frac{2 f_{sol}^2}{2 f_{sol}^2 + (1 - f_{sol})^2}$. Here `f_sol` is the $\zeta$ in [Federrath et al. 2010](https://www.aanda.org/articles/aa/full_html/2010/04/aa12437-09/aa12437-09.html) eq. (6). Set `f_sol=0.5` for the so called "natural mixing" (~2/3 solenoidal energy fraction).
 - Mode 2 — two-field normalized mix (default):
-  - Build two Gaussian random fields, Helmholtz project each; keep only sol from one (seed) and only comp from the other (seed+1), normalize both to rms = 1, then mix in real space with `v = sqrt(f_sol) * v_sol + sqrt(1 - f_sol) * v_comp`.
+  - Build two Gaussian random fields, Helmholtz decomposition each; keep only sol from one (seed) and only comp from the other (seed+1), normalize both to rms = 1, then mix in real space with `v = sqrt(f_sol) * v_sol + sqrt(1 - f_sol) * v_comp`.
   - Here the user-specified `f_sol` directly equals the solenoidal energy fraction (components are pre-normalized to equal rms). Set `f_sol=0.6667` directly for the so called "natural mixing".
 
 Output file name:
