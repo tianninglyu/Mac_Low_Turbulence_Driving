@@ -206,16 +206,19 @@ void save_to_hdf5(std::vector<double>& pertx, std::vector<double>& perty, std::v
     hid_t attr_k = H5Acreate2(file, "k", H5T_NATIVE_INT, scalar_space, H5P_DEFAULT, H5P_DEFAULT);
     hid_t attr_seed = H5Acreate2(file, "seed", H5T_NATIVE_UINT, scalar_space, H5P_DEFAULT, H5P_DEFAULT);
     hid_t attr_fsol = H5Acreate2(file, "f_sol", H5T_NATIVE_DOUBLE, scalar_space, H5P_DEFAULT, H5P_DEFAULT);
+    hid_t attr_mode = H5Acreate2(file, "mode", H5T_NATIVE_DOUBLE, scalar_space, H5P_DEFAULT, H5P_DEFAULT);
 
     H5Awrite(attr_n, H5T_NATIVE_INT, &n);
     H5Awrite(attr_k, H5T_NATIVE_INT, &k);
     H5Awrite(attr_seed, H5T_NATIVE_UINT, &seed);
     H5Awrite(attr_fsol, H5T_NATIVE_DOUBLE, &f_sol);
+    H5Awrite(attr_mode, H5T_NATIVE_DOUBLE, &mode);
 
     H5Aclose(attr_fsol);
     H5Aclose(attr_seed);
     H5Aclose(attr_k);
     H5Aclose(attr_n);
+    H5Aclose(attr_mode);
     H5Sclose(scalar_space);
 
     H5Dclose(dset_z);

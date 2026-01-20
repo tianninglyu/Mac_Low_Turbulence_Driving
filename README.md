@@ -40,7 +40,7 @@ Output file name:
 ```
 zdrv_n{n}_k{k}_seed{seed}_f{f_sol}_mode{mode}.hdf5
 ```
-Datasets: `pertx`, `perty`, `pertz`, shape `(n, n, n)`; attributes: `n`, `k`, `seed`, `f_sol`.
+Datasets: `pertx`, `perty`, `pertz`, shape `(n, n, n)`; attributes: `n`, `k`, `seed`, `f_sol`, `mode`.
 
 ## Tools
 - Power spectrum: `python Tools/power_spectrum.py /path/to/zdrv_*.hdf5`
