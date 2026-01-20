@@ -28,8 +28,13 @@ int main(int argc, const char * argv[]) {
     std::cout << "Please set random seeds for generating pertx, perty and pertz:";
     std::cin >> seed;
 
+    // Choose driving mode
+    int mode;
+    std::cout << "Select mode (1=single-field Helmholtz mix, 2=two-field normalized mix):";
+    std::cin >> mode;
+
     // Set solenoidal energy fraction
-    std::cout << "Please set solenoidal energy fraction f_sol (0~1, 1=solenoidal, 0=compressive):";
+    std::cout << "Please set solenoidal fraction f_sol (0~1, 1=solenoidal, 0=compressive, read README.md to see the differences of the definitions of f_sol between mode 1 and 2):";
     std::cin >> f_sol;
     
     // Set initial rms velocity vrms
@@ -44,13 +49,13 @@ int main(int argc, const char * argv[]) {
     std::vector<double> pertx;
     std::vector<double> perty;
     std::vector<double> pertz;
-    GRF(n, k, seed, f_sol, pertx, perty, pertz);
+    GRF(n, k, seed, f_sol, mode, pertx, perty, pertz);
     
     // Scale the velocity to unity
     scale_velocity_to_unity(pertx, perty, pertz);
     
     // Save to HDF5 file
-    save_to_hdf5(pertx, perty, pertz, n, k, seed, f_sol);
+    save_to_hdf5(pertx, perty, pertz, n, k, seed, f_sol, mode);
 
     return 0;
 }
