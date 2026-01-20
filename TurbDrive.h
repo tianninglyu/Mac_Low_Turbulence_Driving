@@ -4,8 +4,6 @@
 
 const double PI = 3.141592653589793;
 
-double compute_k(int i, int j, int l, int n); // Compute magnitude of k
-
 // Create a Gaussian Random Field with n^3 grids and top-hat power spectrum in (k-1)~k
 // f_sol sets the solenoidal energy fraction (0=fully compressive, 1=fully solenoidal)
 // mode=1: single-field Helmholtz mix (Federrath-style). mode=2: two independent fields (pure sol + pure comp), each rms=1 then mixed.

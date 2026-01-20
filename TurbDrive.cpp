@@ -9,14 +9,6 @@
 #include <complex>
 #include <algorithm>
 
-double compute_k(int i, int j, int l, int n)
-{
-    int kx = (i <= n/2) ? i : i - n;
-    int ky = (j <= n/2) ? j : j - n;
-    int kz = (l <= n/2) ? l : l - n;
-    return sqrt(kx*kx + ky*ky + kz*kz);
-}
-
 void GRF(int n, int k, unsigned int seed, double f_sol, int mode,
          std::vector<double>& pertx, std::vector<double>& perty, std::vector<double>& pertz)
 {
@@ -68,9 +60,9 @@ void GRF(int n, int k, unsigned int seed, double f_sol, int mode,
                         continue;
                     }
 
-                    const double amp_x = std::max(0.0, amplitude_distribution(generator));
-                    const double amp_y = std::max(0.0, amplitude_distribution(generator));
-                    const double amp_z = std::max(0.0, amplitude_distribution(generator));
+                    const double amp_x = amplitude_distribution(generator);
+                    const double amp_y = amplitude_distribution(generator);
+                    const double amp_z = amplitude_distribution(generator);
                     const double phase_x = phase_distribution(generator);
                     const double phase_y = phase_distribution(generator);
                     const double phase_z = phase_distribution(generator);
