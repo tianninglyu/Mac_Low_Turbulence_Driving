@@ -204,7 +204,7 @@ void save_to_hdf5(std::vector<double>& pertx, std::vector<double>& perty, std::v
     H5Awrite(attr_k, H5T_NATIVE_INT, &k);
     H5Awrite(attr_seed, H5T_NATIVE_UINT, &seed);
     H5Awrite(attr_fsol, H5T_NATIVE_DOUBLE, &f_sol);
-    H5Awrite(attr_mode, H5T_NATIVE_DOUBLE, &mode);
+    H5Awrite(attr_mode, H5T_NATIVE_INT, &mode);
 
     H5Aclose(attr_fsol);
     H5Aclose(attr_seed);
